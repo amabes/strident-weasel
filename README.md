@@ -1,6 +1,11 @@
 # strident-weasel
 grade();
 
+See the grade(); method in action on it's <a href="http://amabes.github.io/strident-weasel" target="_blank">GitHub page</a>.
+<br>
+<br>
+
+###Criteria:
 
 # Goal
 
