@@ -9,8 +9,10 @@ See the grade(); method in action on it's <a href="http://amabes.github.io/strid
 
 # Goal
 
-The goal of this task is to write a function grade() that grades a student's answer and finds certain common mistakes. In particular, the program should figure out (1) if there is a typo in the student's answer, (2) if a word is
-missing or (3) if a word is wrong. If the program finds a common mistake it should highlight it.
+The goal of this task is to write a function grade() that grades a student's answer and finds certain common mistakes. In particular, the program should figure out
+(1) if there is a typo in the student's answer,
+(2) if a word is missing or
+(3) if a word is wrong. If the program finds a common mistake it should highlight it.
 
 # Specification
 
