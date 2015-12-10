@@ -4,6 +4,11 @@
 
 var grade = function(str1, str2) {
 
+	this.original = {
+		str1:str1,
+		str2:str2
+	}
+
     var tupler = function(arr1, arr2) {
 
         var tuples = [];
@@ -29,41 +34,108 @@ var grade = function(str1, str2) {
 
     }
 
-    var traverseWords = function() {
+    var isTypo = function(){
+
+    }
+
+    var traverseWords = function(arr1, arr2, n) {
+
+		console.log('/ / / / traverse / / / / /');
+		console.log(arr1)
+		console.log(arr2)
+
         // Since NOT equal
         // Loop through each character to determine diff.
         // each word can have up to one typo
         // Need to handle swaps next...
-        for (var x = 0; x < arr1[n].length; x++) {
 
-            console.log('errors = ' + errors);
-            //if(arr1[n][x]===arr2[n][x]){return true;}
+        // Track errors
+        var errors = 0;
 
-            if (errors < arr1.length - 1) {
+        // Setup pointer
+		var j = 0;
 
-                if (arr1[n][x].length === arr2[n][x].length) {
-                    // swap
-                    // wrong word
-                    console.log(n + '|' + x + ' = ' + arr1[n][x] + ' : ' + arr2[n][x]);
+        for (var x = 0; x < arr1.length; x++) {
 
-                    if (errors < arr1.length - 1) {}
-                    console.log('swap or wrong word');
+            console.log('(errors) = ' + errors);
 
-                    errors++;
+            if (errors <= 1) {
+				//if (arr1[x].length === arr2[x].length) {
+				// Accounts for hhouse
+				console.log(n + '|' + x + ' = ' + arr1[x] + ' : ' + arr2[j]+' (j='+j+')');
+				console.log();
 
-                } else if (arr1[n][x] !== arr2[n][x]) {
+				if(x!==j){
 
-                    errors++;
+					// Checking TYPOS
+					console.log('...................checking (typos)');
+					console.log(n + '|' + x + ' = ' + arr1[x] + ' : ' + arr2[j]+' (j='+j+')');
 
-                }
+					if (arr1[x] !== arr2[j] && arr2[j]!=undefined) {
+
+						// Typo
+						console.log('(FALSE : WRONG WORD)');
+
+						errors++;
+
+						return false;
+
+					} else if (j>=arr1[x].length) {
+
+						// Typo
+						console.log('(TRUE : TYPO)');
+						return ['True','typo',[]];
+
+					}
+
+					console.log('..............................');
+
+				} else {
+
+					// Have not found a typo yet
+
+	                if (arr1[x] !== arr2[x] && arr1[x] !== arr2[x+1] && arr1[x] !== arr2[x-1]) {
+
+						// swap
+						// wrong word
+
+	                    if (errors < arr1.length - 1) {}
+	                    console.log('(error 1 : SWAP or WRONG WORD)');
+
+	                    errors++;
+
+	                } else {
+
+						// Increase pointer to keep checking string
+						j+=1;
+						errors++;
+
+					}
+
+				}
+
+				j++;
 
             } else {
 
                 console.log('more than one error in word');
-
+                return false;
             }
 
+            //j++;
+
         }
+
+        console.log('/ / / / / / / / / /');
+
+    }
+
+    var checkResult = function(results){
+
+		console.log(results);
+		console.log(this.original.str1);
+		console.log(this.original.str2);
+
     }
 
     var checkErrors = function(arr1, arr2, n) {
@@ -74,9 +146,9 @@ var grade = function(str1, str2) {
         // Need to make sure original strings includin puctuation remain in tact for highlighting
 
         // Tracking errors count per word
-        var errors = 0;
+        //var errors = 0;
 
-        console.log(n + ' = ' + arr1[n] + ' : ' + arr2[n]);
+        //console.log(n + ' = ' + arr1[n] + ' : ' + arr2[n]);
 
         if (arr1[n] === arr2[n]) {
             // Words are equal
@@ -87,26 +159,29 @@ var grade = function(str1, str2) {
             // Word lengths are equal
             // Potential swap or wrong_word case
 
-            console.log('swap or wrong_word');
+			console.log('/ / / / ['+n+']/ / / / / /');
+			checkResult(traverseWords(arr1[n], arr2[n], n));
+			console.log('/ / / / / / / / / /');
 
         } else if (arr2[n].length <= arr1[n].length + 1) {
             // swap, wrong_word or typo case
-            errors++;
-            console.log('swap or wrong_word or typo');
+            //errors++;
+			console.log('/ / / / ['+n+']/ / / / / /');
+
+            checkResult(traverseWords(arr1[n], arr2[n], n));
+
+			console.log('/ / / / / / / / / /');
 
         } else {
             // Potential wrong_word case
             // Potential multiple typo case
-            errors++;
+            //errors++;
         }
-
-        console.log('j = ' + j);
 
         if (n === 0) {
             return 'done'; // 1
         }
 
-        j++;
         return checkErrors(arr1, arr2, n - 1);
 
     }
@@ -130,9 +205,6 @@ var grade = function(str1, str2) {
     }
 
     ////////////////////////////////////////
-
-	// Setup pointer
-    var j = 0;
 
 	// RM Punctuation
 	str1 = stripPunctuation(str1);
@@ -160,9 +232,9 @@ var grade = function(str1, str2) {
 	
 }
 
-var outcome = grade('This is my house.', 'This is mi hhouse');
+console.log(grade('This is my house.', 'This is mi hhouse'));
+//var outcome = grade('house.', 'hhruse');
 
-console.log(outcome);
 
 // Question to ask company:
 
