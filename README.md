@@ -1,20 +1,19 @@
-# strident-weasel
-grade();
+# Grade();
 
-See the grade(); method in action on it's <a href="http://amabes.github.io/strident-weasel" target="_blank">GitHub page</a>.
+http://amabes.github.io/strident-weasel
+
+###To Run go to link above
 <br>
 <br>
 
-###Criteria:
-
-# Goal
+## Goal
 
 The goal of this task is to write a function grade() that grades a student's answer and finds certain common mistakes. In particular, the program should figure out
 (1) if there is a typo in the student's answer,
 (2) if a word is missing or
 (3) if a word is wrong. If the program finds a common mistake it should highlight it.
 
-# Specification
+## Specification
 
 Here is the specification in Python (you do not have to use python). Make sure to make the function available from the command line.
 def grade(correct_answer, student_answer): """
