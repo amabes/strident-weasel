@@ -20,11 +20,22 @@
 
 				<div class="columns twelve">
 
-					<h4 id="question">Arbitrary question?</h4>
+					<h3>Grading Machine</h3>
+					<h5>Type a incorrect variation of the text on the right</h5>
 
-					<input id="user-input"></input>
+					<form id="submit-answer">
 
-					<div id="key">Answer string</div>
+						<input id="user-input" type="text" placeholder="Ex: This is mi hhouse"></input>
+
+						<select id="key">
+							<option value="This is my house." sample="Ex: This is mi hhouse">This is my house.</option>
+							<option value="A house" sample="Ex: a house!">A house</option>
+							<option value="house" sample="Ex: Horse">house</option>
+						</select>
+
+						<br/>
+
+					</form>
 
 				</div>
 

@@ -84,7 +84,7 @@ var grade = function(str1, str2) {
 
 						// Typo
 						console.log('(TRUE : TYPO)');
-						return ['True','typo',[]];
+						return [true,'typo',[]];
 
 					}
 
@@ -232,7 +232,7 @@ var grade = function(str1, str2) {
 	
 }
 
-console.log(grade('This is my house.', 'This is mi hhouse'));
+//console.log(grade('This is my house.', 'This is mi hhouse'));
 //var outcome = grade('house.', 'hhruse');
 
 
