@@ -4,251 +4,259 @@
 
 var grade = function(str1, str2) {
 
-	this.original = {
-		str1:str1,
-		str2:str2
-	}
+	// Tracking total errors
+	this.allErrors = [];
+	this.countErrors = 'None';
 
-    var tupler = function(arr1, arr2) {
+	// Tracking original strings
+  this.original = {
+    str1: str1,
+    str2: str2
+  }
 
-        var tuples = [];
+  var tupler = function(arr1, arr2) {
 
-        for (var i = 0; i < arr1.length; i++) {
+    var tuples = [];
 
-            tuples.push([arr1[i], arr2[i]]);
+    for (var i = 0; i < arr1.length; i++) {
 
-        }
-
-        return tuples;
-
-    }
-
-    var groupWords = function(str1, str2, callback) {
-        str1 = str1.split(' ');
-        str2 = str2.split(' ');
-
-        console.log(str1);
-        console.log(str2);
-
-        callback(str1, str2);
+      tuples.push([arr1[i], arr2[i]]);
 
     }
 
-    var isTypo = function(){
+    return tuples;
 
-    }
+  }
 
-    var traverseWords = function(arr1, arr2, n) {
+  var groupWords = function(str1, str2, callback) {
+    str1 = str1.split(' ');
+    str2 = str2.split(' ');
 
-		console.log('/ / / / traverse / / / / /');
-		console.log(arr1)
-		console.log(arr2)
+    console.log(str1);
+    console.log(str2);
 
-        // Since NOT equal
-        // Loop through each character to determine diff.
-        // each word can have up to one typo
-        // Need to handle swaps next...
+    callback(str1, str2);
 
-        // Track errors
-        var errors = 0;
+  }
 
-        // Setup pointer
-		var j = 0;
+  var isTypo = function() {
 
-        for (var x = 0; x < arr1.length; x++) {
+  }
 
-            console.log('(errors) = ' + errors);
+  var traverseWords = function(arr1, arr2, n) {
 
-            if (errors <= 1) {
-				//if (arr1[x].length === arr2[x].length) {
-				// Accounts for hhouse
-				console.log(n + '|' + x + ' = ' + arr1[x] + ' : ' + arr2[j]+' (j='+j+')');
-				console.log();
+    console.log('/ / / / traverse / / / / /');
+    console.log(arr1)
+    console.log(arr2)
 
-				if(x!==j){
+    // Since NOT equal
+    // Loop through each character to determine diff.
+    // each word can have up to one typo
+    // Need to handle swaps next...
 
-					// Checking TYPOS
-					console.log('...................checking (typos)');
-					console.log(n + '|' + x + ' = ' + arr1[x] + ' : ' + arr2[j]+' (j='+j+')');
+    // Track errors
+    var errors = 0;
 
-					if (arr1[x] !== arr2[j] && arr2[j]!=undefined) {
+    // Setup pointer
+    var j = 0;
 
-						// Typo
-						console.log('(FALSE : WRONG WORD)');
+    for (var x = 0; x < arr1.length; x++) {
 
-						errors++;
+      console.log('(errors) = ' + errors);
 
-						return false;
+      if (errors <= 1) {
+        //if (arr1[x].length === arr2[x].length) {
+        // Accounts for hhouse
+        console.log(n + '|' + x + ' = ' + arr1[x] + ' : ' + arr2[j] + ' (j=' + j + ')');
+        console.log();
 
-					} else if (j>=arr1[x].length) {
+        if (x !== j) {
 
-						// Typo
-						console.log('(TRUE : TYPO)');
-						return [true,'typo',[]];
+          // Checking TYPOS
+          console.log('...................checking (typos)');
+          console.log(n + '|' + x + ' = ' + arr1[x] + ' : ' + arr2[j] + ' (j=' + j + ')');
 
-					}
+          if (arr1[x] !== arr2[j] && arr2[j] != undefined) {
 
-					console.log('..............................');
+            // Typo
+            console.log('(FALSE : WRONG WORD)');
+						this.allErrors.push([false, "wrong_word", [n]]);
+            errors++;
 
-				} else {
+            return false;
 
-					// Have not found a typo yet
+          } else if (j >= arr1[x].length) {
 
-	                if (arr1[x] !== arr2[x] && arr1[x] !== arr2[x+1] && arr1[x] !== arr2[x-1]) {
+            // Typo
+            console.log('(TRUE : TYPO)');
+            return this.allErrors.push([true, 'typo', []]);
 
-						// swap
-						// wrong word
+          }
 
-	                    if (errors < arr1.length - 1) {}
-	                    console.log('(error 1 : SWAP or WRONG WORD)');
-
-	                    errors++;
-
-	                } else {
-
-						// Increase pointer to keep checking string
-						j+=1;
-						errors++;
-
-					}
-
-				}
-
-				j++;
-
-            } else {
-
-                console.log('more than one error in word');
-                return false;
-            }
-
-            //j++;
-
-        }
-
-        console.log('/ / / / / / / / / /');
-
-    }
-
-    var checkResult = function(results){
-
-		console.log(results);
-		console.log(this.original.str1);
-		console.log(this.original.str2);
-
-    }
-
-    var checkErrors = function(arr1, arr2, n) {
-        // Spec arguably excluded delete cases, so I didn't account for that
-        // tuples index's include spaces, don't forget to account for that.
-        // Success handling
-        // Error handling
-        // Need to make sure original strings includin puctuation remain in tact for highlighting
-
-        // Tracking errors count per word
-        //var errors = 0;
-
-        console.log(n + ' = ' + arr1[n] + ' : ' + arr2[n]);
-
-        if (arr1[n] === arr2[n]) {
-            // Words are equal
-            // Nothing to do...
-            console.log('EQUAL');
-
-        } else if (typeof(arr2[n]) === 'undefined' || arr1[n].length !== arr2[n].length) {
-
-			console.log('/ / / / ['+n+']/ / / / / /');
-			checkResult([false,"missing",'('+n+')']); // #TODO aggregate tuples
-			console.log('/ / / / / / / / / /');
-
-        } else if (arr1[n].length === arr2[n].length) {
-            // Word lengths are equal
-            // Potential swap or wrong_word case
-
-			console.log('/ / / / ['+n+']/ / / / / /');
-			checkResult(traverseWords(arr1[n], arr2[n], n));
-			console.log('/ / / / / / / / / /');
-
-        } else if (arr2[n].length <= arr1[n].length + 1) {
-            // swap, wrong_word or typo case
-            //errors++;
-			console.log('/ / / / ['+n+']/ / / / / /');
-
-            checkResult(traverseWords(arr1[n], arr2[n], n));
-
-			console.log('/ / / / / / / / / /');
+          console.log('..............................');
 
         } else {
-            // Potential wrong_word case
-            // Potential multiple typo case
-            //errors++;
+
+          // Have not found a typo yet
+
+          if (arr1[x] !== arr2[x] && arr1[x] !== arr2[x + 1] && arr1[x] !== arr2[x - 1]) {
+
+            // swap
+            // wrong word
+
+            if (errors < arr1.length - 1) {}
+            console.log('(error 1 : SWAP or WRONG WORD)');
+
+            errors++;
+
+          } else {
+
+            // Increase pointer to keep checking string
+            j += 1;
+            errors++;
+
+          }
+
         }
 
-        if (n === 0) {
-            return 'done'; // 1
-        }
+        j++;
 
-        return checkErrors(arr1, arr2, n - 1);
+      } else {
 
-    }
+        console.log('more than one error in word');
+        return false;
+      }
 
-    var sanitize = function(str){
-
-		// Lowercase
-		str = str.toLowerCase();
-		// Strip Punctuation
-		// http://stackoverflow.com/a/4328722/1564463
-		str = str.replace(/[.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"");
-		return str.replace(/\s{2,}/g," ");
+      //j++;
 
     }
 
-    var highlight = function(){
+    console.log('/ / / / / / / / / /');
 
+  }
+
+  var checkResult = function(results) {
+
+    console.log(this.allErrors);
+    console.log(this.original.str1);
+    console.log(this.original.str2);
+
+  }
+
+  var checkErrors = function(arr1, arr2, n) {
+    // Spec arguably excluded delete cases, so I didn't account for that
+    // tuples index's include spaces, don't forget to account for that.
+    // Success handling
+    // Error handling
+    // Need to make sure original strings includin puctuation remain in tact for highlighting
+
+    console.log(n + ' = ' + arr1[n] + ' : ' + arr2[n]);
+
+    if (arr1[n] === arr2[n]) {
+      // Words are equal
+      // Nothing to do...
+      console.log('EQUAL');
+
+    } else if (typeof(arr2[n]) === 'undefined' || arr1[n].length !== arr2[n].length) {
+
+      console.log('/ / / / [' + n + ']/ / / / / /');
+
+      // #TODO aggregate tuples
+			this.allErrors.push([false, "missing 1", [n]]);
+
+      console.log('/ / / / / / / / / /');
+
+    } else if (arr1[n].length === arr2[n].length) {
+      // Word lengths are equal
+      // Potential swap or wrong_word case
+
+      console.log('/ / / / [' + n + ']/ / / / / /');
+      traverseWords(arr1[n], arr2[n], n);
+      console.log('/ / / / / / / / / /');
+
+    } else if (arr2[n].length <= arr1[n].length + 1) {
+      // swap, wrong_word or typo case
+      //errors++;
+      console.log('/ / / / [' + n + ']/ / / / / /');
+
+      traverseWords(arr1[n], arr2[n], n);
+
+      console.log('/ / / / / / / / / /');
+
+    } else {
+      // Potential wrong_word case
+      // Potential multiple typo case
+      //errors++;
     }
 
-    var success = function(){
-
+    if (n === 0) {
+      return 'done'; // 1
     }
 
-    var error = function(){
+    return checkErrors(arr1, arr2, n - 1);
 
-    }
+  }
 
-    ////////////////////////////////////////
+  var sanitize = function(str) {
 
-    if(str2.length==0){
+    // Lowercase
+    str = str.toLowerCase();
+    // Strip Punctuation
+    // http://stackoverflow.com/a/4328722/1564463
+    str = str.replace(/[.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+    return str.replace(/\s{2,}/g, " ");
 
-		checkResult([false,"missing"]); // #TODO add tuples
+  }
 
-		return false;
+  var highlight = function() {
 
-    }
+  }
 
-	// RM Punctuation
-	str1 = sanitize(str1);
-	str2 = sanitize(str2);
+  var success = function() {
 
-	// Convert strings to arrays
-	groupWords(str1,str2,function(arr1,arr2){
+  }
 
-		// Triage, determine appropriate error
-		checkErrors(arr1,arr2,arr1.length-1);
+  var error = function() {
 
-		// FALSE
-		//
-		// Cases: multiple typos, wrong_word, missing
-		// return tuples consisting of indices
-		// corresponding to begining,end of troubled word
+  }
 
-		// TRUE
-		//
-		// Cases: singular typo, swaps
+  ////////////////////////////////////////
 
-	});
+  if (str2.length == 0) {
 
-	////////////////////////////////////////
-	
+    this.allErrors.push([false, "missing 2"]); // #TODO add tuples
+
+    return false;
+
+  }
+
+  // RM Punctuation
+  str1 = sanitize(str1);
+  str2 = sanitize(str2);
+
+  // Convert strings to arrays
+  groupWords(str1, str2, function(arr1, arr2) {
+
+    // Triage, determine appropriate error
+    checkErrors(arr1, arr2, arr1.length - 1);
+
+		console.log('- - - - checkResult - - - ');
+		checkResult();
+		console.log('- - - - /checkResult - - - ');
+    // FALSE
+    //
+    // Cases: multiple typos, wrong_word, missing
+    // return tuples consisting of indices
+    // corresponding to begining,end of troubled word
+
+    // TRUE
+    //
+    // Cases: singular typo, swaps
+
+  });
+
+  ////////////////////////////////////////
+
 }
 
 //console.log(grade('This is my house.', 'This is mi hhouse'));
@@ -265,7 +273,7 @@ var grade = function(str1, str2) {
 
 // Tuple
 // One away (edit distance 1 / word)
-// Swaps (ae,ea) 
+// Swaps (ae,ea)
 // Ignore punctuation
 
 
@@ -306,4 +314,3 @@ var grade = function(str1, str2) {
 // if there is a typo in the student's answer
 // if a word is missing or
 // if a word is wrong. If the program finds a common mistake it should highlight it.
-
