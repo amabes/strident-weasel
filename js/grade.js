@@ -148,12 +148,18 @@ var grade = function(str1, str2) {
         // Tracking errors count per word
         //var errors = 0;
 
-        //console.log(n + ' = ' + arr1[n] + ' : ' + arr2[n]);
+        console.log(n + ' = ' + arr1[n] + ' : ' + arr2[n]);
 
         if (arr1[n] === arr2[n]) {
             // Words are equal
             // Nothing to do...
             console.log('EQUAL');
+
+        } else if (typeof(arr2[n]) === 'undefined' || arr1[n].length !== arr2[n].length) {
+
+			console.log('/ / / / ['+n+']/ / / / / /');
+			checkResult([false,"missing",'('+n+')']); // #TODO aggregate tuples
+			console.log('/ / / / / / / / / /');
 
         } else if (arr1[n].length === arr2[n].length) {
             // Word lengths are equal
@@ -210,6 +216,14 @@ var grade = function(str1, str2) {
     }
 
     ////////////////////////////////////////
+
+    if(str2.length==0){
+
+		checkResult([false,"missing"]); // #TODO add tuples
+
+		return false;
+
+    }
 
 	// RM Punctuation
 	str1 = sanitize(str1);
