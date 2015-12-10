@@ -1,19 +1,28 @@
 #site-name {
-
-  h1 {
-
-  text-align: center;
-  margin:30px auto 10%;
-
-  }
-
+	text-align: center;
+	margin:30px auto 8%;
 }
 
 #user-input {
-  padding: 10px;
+  padding: 0 0 0 10px;
   min-width: 400px;
+  background:none;
+  border:1px solid #e9eaed;
+  border-bottom: 1px #D1D1D1 dashed;
+  &:focus {
+	outline:none;
+	background:rgba(255,255,255,.8);
+	border:1px solid #D1D1D1;
+  }
 }
 
-#input-key {
-
+input[type="submit"] {
+	background:rgba(0,0,0,.8);
+	color:white;
+	padding:10px 15px;
+	border:none;
+	font-weight:bold;
+	&:hover {
+		background:black;
+	}
 }

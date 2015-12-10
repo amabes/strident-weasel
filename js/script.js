@@ -8,14 +8,18 @@ $(document).ready(function(){
 
 		$('#user-input').attr('placeholder', placeholder);
 
+		$('#user-input').focus();
+
 	});
 
 	$('#submit-answer').submit(function(data){
 
 		var key = $('#key').val(),
-			answer = $('#user-input').val();
+			answer = $('#user-input');
 
-		grade(key, answer);
+		grade(key, answer.val());
+
+		answer.blur();
 
 		return false;
 

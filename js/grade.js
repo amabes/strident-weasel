@@ -186,10 +186,15 @@ var grade = function(str1, str2) {
 
     }
 
-    var stripPunctuation = function(str){
+    var sanitize = function(str){
+
+		// Lowercase
+		str = str.toLowerCase();
+		// Strip Punctuation
 		// http://stackoverflow.com/a/4328722/1564463
 		str = str.replace(/[.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"");
 		return str.replace(/\s{2,}/g," ");
+
     }
 
     var highlight = function(){
@@ -207,8 +212,8 @@ var grade = function(str1, str2) {
     ////////////////////////////////////////
 
 	// RM Punctuation
-	str1 = stripPunctuation(str1);
-	str2 = stripPunctuation(str2);
+	str1 = sanitize(str1);
+	str2 = sanitize(str2);
 
 	// Convert strings to arrays
 	groupWords(str1,str2,function(arr1,arr2){

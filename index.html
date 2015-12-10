@@ -21,19 +21,26 @@
 				<div class="columns twelve">
 
 					<h3>Grading Machine</h3>
-					<h5>Type a incorrect variation of the text on the right</h5>
 
 					<form id="submit-answer">
 
-						<input id="user-input" type="text" placeholder="Ex: This is mi hhouse"></input>
+						<h5>Type a incorrect variation of 
 
-						<select id="key">
-							<option value="This is my house." sample="Ex: This is mi hhouse">This is my house.</option>
-							<option value="A house" sample="Ex: a house!">A house</option>
-							<option value="house" sample="Ex: Horse">house</option>
-						</select>
+							<select id="key">
+								<option value="This is my house." sample="Ex: This is mi hhouse">This is my house.</option>
+								<option value="A house" sample="Ex: a house!">A house</option>
+								<option value="house" sample="Ex: Horse">house</option>
+							</select>
+
+						</h5>
 
 						<br/>
+
+						<input id="user-input" type="text" placeholder="Ex: This is mi hhouse" autofocus></input>
+
+						<br/>
+
+						<input type="submit" value="Check Answer" />
 
 					</form>
 
