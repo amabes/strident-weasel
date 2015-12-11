@@ -29,7 +29,7 @@ var grade = function(str1, str2) {
   }
 
   var groupWords = function(str1, str2, callback) {
-    str1 = str1.split(' ');
+    str1 = str1.split(' '); // #TODO experiment with .match(/.*?[\.\s]+?/g);
     str2 = str2.split(' ');
 
     console.log(str1);
@@ -67,14 +67,15 @@ var grade = function(str1, str2) {
       if (errors <= 1) {
         //if (arr1[x].length === arr2[x].length) {
         // Accounts for hhouse
-        console.log(n + '|' + x + ' = ' + arr1[x] + ' : ' + arr2[j] + ' (j=' + j + ')');
-        console.log();
+        //console.log(n + '|' + x + ' = ' + arr1[x] + ' : ' + arr2[j] + ' (j=' + j + ')');
 
         if (x !== j) {
 
           // Checking TYPOS
           console.log('...................checking (typos)');
-          console.log(n + '|' + x + ' = ' + arr1[x] + ' : ' + arr2[j] + ' (j=' + j + ')');
+          //console.log(n + '|' + x + ' = ' + arr1[x] + ' : ' + arr2[j] + ' (j=' + j + ')');
+
+					console.log("arr2[j] : "+arr2[j]);
 
           if (arr1[x] !== arr2[j] && arr2[j] != undefined) {
 
@@ -89,7 +90,33 @@ var grade = function(str1, str2) {
 
             // Typo
             console.log('(TRUE : TYPO)');
-            return this.allErrors.push([true, 'typo', []]);
+
+						console.log('#TYP0');
+						console.log(arr1);
+						var t1a = this.original.str1.indexOf(arr1);
+						var t1b = this.original.str1.indexOf(arr1)+arr1.length;
+						console.log(arr2);
+						var t2a = this.original.str2.indexOf(arr2);
+						var t2b = this.original.str2.indexOf(arr2)+arr2.length;
+
+						console.log('#/TYP0');
+
+						var typoIndex,
+								loggedTypo = false,
+								tupe = {0:[t1a,t1b], 1:[t2a,t2b]};
+
+						for (var y=0;y<this.allErrors.length;y++) {
+
+							if(this.allErrors[y][1] === 'typo'){
+
+								// add to existing list of typos
+								return this.allErrors[y][2].push( tupe );
+
+							}
+
+						}
+
+						return this.allErrors.push([true, 'typo', [ tupe ] ]);
 
           }
 
@@ -144,49 +171,14 @@ var grade = function(str1, str2) {
   }
 
   var checkErrors = function(arr1, arr2, n) {
-    // Spec arguably excluded delete cases, so I didn't account for that
-    // tuples index's include spaces, don't forget to account for that.
-    // Success handling
-    // Error handling
-    // Need to make sure original strings includin puctuation remain in tact for highlighting
 
-    console.log(n + ' = ' + arr1[n] + ' : ' + arr2[n]);
+		if (arr1[n] !== arr2[n]){
+			// Words are not equal
+      // Potential typo, swap or wrong_word case
 
-    if (arr1[n] === arr2[n]) {
-      // Words are equal
-      // Nothing to do...
-      console.log('EQUAL');
-
-    } else if (typeof(arr2[n]) === 'undefined' || arr1[n].length !== arr2[n].length) {
-
-      console.log('/ / / / [' + n + ']/ / / / / /');
-
-      // #TODO aggregate tuples
-			this.allErrors.push([false, "missing 1", [n]]);
-
-      console.log('/ / / / / / / / / /');
-
-    } else if (arr1[n].length === arr2[n].length) {
-      // Word lengths are equal
-      // Potential swap or wrong_word case
-
-      console.log('/ / / / [' + n + ']/ / / / / /');
-      traverseWords(arr1[n], arr2[n], n);
-      console.log('/ / / / / / / / / /');
-
-    } else if (arr2[n].length <= arr1[n].length + 1) {
-      // swap, wrong_word or typo case
-      //errors++;
-      console.log('/ / / / [' + n + ']/ / / / / /');
-
+      console.log('## [' + n + '] ##');
       traverseWords(arr1[n], arr2[n], n);
 
-      console.log('/ / / / / / / / / /');
-
-    } else {
-      // Potential wrong_word case
-      // Potential multiple typo case
-      //errors++;
     }
 
     if (n === 0) {
@@ -255,62 +247,4 @@ var grade = function(str1, str2) {
 
   });
 
-  ////////////////////////////////////////
-
 }
-
-//console.log(grade('This is my house.', 'This is mi hhouse'));
-//var outcome = grade('house.', 'hhruse');
-
-
-// Question to ask company:
-
-// In regards to Swaps, is this for any two letters or just the characters "ae" & "ea" ?
-
-
-
-// Keywords:
-
-// Tuple
-// One away (edit distance 1 / word)
-// Swaps (ae,ea)
-// Ignore punctuation
-
-
-
-// Input:
-
-// Unicode string (key/baseline),
-// Unicode String (user input)
-
-
-
-// Output:
-
-// Correct, blame, highlights
-
-
-
-// Results:
-
-// True
-// None
-// Typo
-// Missing
-// Wrong_word
-
-
-
-// Methods needed:
-
-// grade method
-// highlight method (takes highlights as input & manipulates DOM to illustrate errors)
-// swap
-// 1 away
-
-
-// Criteria/What's expected:
-
-// if there is a typo in the student's answer
-// if a word is missing or
-// if a word is wrong. If the program finds a common mistake it should highlight it.
