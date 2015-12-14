@@ -2,7 +2,7 @@
 // Alan Joseph Mabry
 // https://github.com/amabes
 
-var grade = function(str1, str2) {
+var grade = function(str1, str2, callback) {
 
   // Tracking total errors
   this.allErrors = [];
@@ -14,16 +14,16 @@ var grade = function(str1, str2) {
   }
 
   var groupWords = function(str1, str2, callback) {
+
     str1 = str1.split(' '); // #TODO experiment with .match(/.*?[\.\s]+?/g);
     str2 = str2.split(' ');
-
     callback(str1, str2);
 
   }
 
 	var createTupleHighlights = function(verdict, error_type, arr1, arr2){
 
-		console.log('/ '+verdict+' / '+error_type+' /'+ arr1);
+		//console.log('/ '+verdict+' / '+error_type+' /'+ arr1);
 
 		if(error_type == 'missing'){
 
@@ -43,55 +43,42 @@ var grade = function(str1, str2) {
 
 		var t1b,
 				t1a = this.original.str1.indexOf(arr1);
-				console.log('0: t1a ',t1a);
-				console.log('0: t1b ',t1b);
+
 		if (t1a === -1) {
 
 			t1a = 0;
 			t1b = arr1.length;
-			console.log('arr2 ',arr2);
-			console.log('1: t1a ',t1a);
-			console.log('1: t1b ',t1b);
+
 		} else {
 
 			t1b = this.original.str1.indexOf(arr1) + arr1.length;
-			console.log('2: t1a ',t1a);
-			console.log('2: t1b ',t1b);
+
 		}
-		console.log('3: t1a ',t1a);
-		console.log('3: t1b ',t1b);
 
 		var t2b,
 				t2a = this.original.str2.indexOf(arr2);
-				console.log('4: t1a ',t1a);
-				console.log('4: t1b ',t1b);
+
 		if(error_type == 'missing') {
 
 			// Set both blam coordinates to t1a
 			t2a = t1a;
 			t2b = t1a;
-			console.log('5: t1a ',t1a);
-			console.log('5: t1b ',t1b);
+
 		} else if (t2a === -1) {
 
 			t2a = 0;
 			t2b = arr2.length;
-			console.log('6: t1a ',t1a);
-			console.log('6: t1b ',t1b);
 
 		} else {
 
 			t2b = this.original.str2.indexOf(arr2) + arr2.length;
-			console.log('7: t1a ',t1a);
-			console.log('7: t1b ',t1b);
+
 		}
 
 		var tupe = {
 			0: [t1a, t1b],
 			1: [t2a, t2b]
 		}
-
-		console.log('tupe ', tupe);
 
 		// Aggregate all typos into one error
 		for (var y = 0; y < this.allErrors.length; y++) {
@@ -119,9 +106,6 @@ var grade = function(str1, str2) {
 
   var traverseWords = function(arr1, arr2, n) {
 
-    console.log(arr1)
-    console.log(arr2)
-
     // Since NOT equal
     // Loop through each character to determine diff.
     // each word can have up to one typo
@@ -145,7 +129,7 @@ var grade = function(str1, str2) {
           if (arr1[x] !== arr2[j] && arr2[j] != undefined) {
 
             // wrong_word 1
-						createTupleHighlights(false,'wrong_word',arr1,arr2); //this.allErrors.push([false, "wrong_word", [n]]);
+						createTupleHighlights(false,'wrong_word',arr1,arr2);
 
 						errors++;
 
@@ -188,7 +172,7 @@ var grade = function(str1, str2) {
 
       } else {
 
-        console.log('more than one error in word');
+        // More than one error in word
 
 				this.allErrors.push(['none', 'wrong_word', []]);
 
@@ -231,9 +215,7 @@ var grade = function(str1, str2) {
 
   }
 
-  var highlight = function(arr1, arr2, errors) {
-
-    console.log(errors);
+  var highlight = function(arr1, arr2, errors, callback) {
 
 		$('code').html(errors);
 
@@ -242,9 +224,6 @@ var grade = function(str1, str2) {
     for (var i = 0; i < errors.length; i++) {
 
         for (var j = 0; j < errors[i][2].length; j++) {
-
-					console.log(errors[i][2][j][0][0]);
-					console.log(errors[i][2][j][0][1]);
 
 					var correct_spelling = this.original.str1.slice(errors[i][2][j][0][0], errors[i][2][j][0][1]);
 
@@ -261,8 +240,6 @@ var grade = function(str1, str2) {
 
 					}
 
-					console.log(result);
-
         }
 
     }
@@ -272,12 +249,13 @@ var grade = function(str1, str2) {
   }
 
 	var checkMissing = function(arr1, arr2){
-		console.log(arr1);
-		console.log(arr2);
+
 		if (arr2.length <= arr1.length-2) {
 
 			// Missing 2 or more words
-			alert('Try again. 2 or more words missing.')
+			alert({
+				message:'Try again. 2 or more words missing.'
+			});
 
 		} else if (arr2.length <= arr1.length-1){
 
@@ -300,12 +278,15 @@ var grade = function(str1, str2) {
 
 				// Missing 1 word and others contain errors
 				// Not sure how to isolate missing word in this scenario
-				alert('Try again. Missing words and contains other errors.');
+
+				alert({
+					message:'Try again. Missing words and contains other errors.'
+				});
+
 				return false;
 
 			}
 
-			console.log('missing word is ', arr1[0]);
 			// Missing 1 word and there are no other typos, etc.
 			createTupleHighlights(false,'missing',arr1[0]);
 
@@ -315,31 +296,53 @@ var grade = function(str1, str2) {
 
 	}
 
-  var success = function() {
+	var checkSame = function(str1,str2){
 
-  }
+		if(str1 === str2){
 
-  var error = function() {
+			alert({
+				message:'Correct!'
+			});
 
-  }
+			tryAgain();
+
+			return false;
+
+		}
+
+	}
+
+	var checkEmpty = function(str2){
+
+		if (str2.length === 0) {
+
+			alert({
+				message:'Try again.'
+			});
+
+	    this.allErrors.push([false, "missing",[]]);
+
+	    return false;
+
+	  }
+
+	}
 
   ////////////////////////////////////////
 
-  if (str2.length == 0) {
 
-    this.allErrors.push([false, "missing 2"]); // #TODO add tuples
-
-    return false;
-
-  }
+	// Check if empty
+  checkEmpty(str2);
 
   // RM Punctuation
   str1 = sanitize(str1);
   str2 = sanitize(str2);
 
+	// Check if strings are the same
+	checkSame(str1,str2);
+
   // Convert strings to arrays
   groupWords(str1, str2, function(arr1, arr2) {
-
 
 		if(arr1.length === arr2.length){
 
@@ -353,18 +356,14 @@ var grade = function(str1, str2) {
 
 		}
 
-    console.log('- - - - result - - - ');
-    highlight(arr1, arr2, this.allErrors);
+    highlight(arr1, arr2, this.allErrors, function(){
 
-		// FALSE
-    //
-    // Cases: multiple typos, wrong_word, missing
-    // return tuples consisting of indices
-    // corresponding to begining,end of troubled word
+			// Callback
+			if($.isFunction(callback)) callback();
 
-    // TRUE
-    //
-    // Cases: singular typo, swaps
+		});
+
+
 
   });
 

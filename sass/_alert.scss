@@ -1,0 +1,25 @@
+#alert {
+
+	bottom: -1000px;
+	position: fixed!important;
+	width: 100%;
+	left: 0;
+	margin:0;
+	//@include transition(all, 0.15s, ease);
+	-webkit-transition: all .2s ease-in-out;
+     -moz-transition: all .2s ease-in-out;
+      -ms-transition: all .2s ease-in-out;
+       -o-transition: all .2s ease-in-out;
+          transition: all .2s ease-in-out;
+	background: white;
+	padding: 20px 100px;
+	position: relative;
+	text-align: center;
+
+	h3 {
+
+		margin:0;
+
+	}
+
+}

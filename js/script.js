@@ -46,19 +46,11 @@ var submitAnswer = function() {
   $('input[type="submit"]').hide();
   $('#try-again').show();
 
-  if (answer.val() == '') {
-
-    alert('Try again.');
-
-    tryAgain();
-
-    return false;
-
-  }
-
   $('#highlighter').show();
 
-  grade(key, answer.val());
+  grade(key, answer.val(),function(){
+    tryAgain();
+  });
 
   answer.blur();
 

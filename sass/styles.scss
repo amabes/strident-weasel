@@ -2,6 +2,7 @@
 @import 'normalize';
 @import 'vars';
 @import 'skeleton';
+@import 'alert';
 @import 'general';
 @import 'layout';
 
@@ -9,9 +10,9 @@
             EX: BREAKPOINTS
 ***************************************************
 @media #{$small_and_above}{
-    
+
 }
 @media #{$small}{
-    
+
 }
 */
