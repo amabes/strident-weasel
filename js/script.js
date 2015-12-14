@@ -67,7 +67,7 @@ var tryAgain = function(){
   $('#user-input').focus().val('');
   $('#try-again').hide();
   $('input[type="submit"]').show();
-  $('code').empty();
+  $('#code').empty();
 
 }
 

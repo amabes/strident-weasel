@@ -217,11 +217,14 @@ var grade = function(str1, str2, callback) {
 
   var highlight = function(arr1, arr2, errors, callback) {
 
-		$('code').html(errors);
+		$('#code').empty();
+		console.log(errors);
 
     var result = this.original.str2.split('');
 
     for (var i = 0; i < errors.length; i++) {
+
+			$('#code').append('<code>'+errors[i]+'</code><br>');
 
         for (var j = 0; j < errors[i][2].length; j++) {
 
@@ -254,7 +257,7 @@ var grade = function(str1, str2, callback) {
 
 			// Missing 2 or more words
 			alert({
-				message:'Try again. 2 or more words missing.'
+				message:'Too many missing words.'
 			});
 
 		} else if (arr2.length <= arr1.length-1){
@@ -280,7 +283,7 @@ var grade = function(str1, str2, callback) {
 				// Not sure how to isolate missing word in this scenario
 
 				alert({
-					message:'Try again. Missing words and contains other errors.'
+					message:'Contains errors and missing words'
 				});
 
 				return false;
@@ -328,6 +331,22 @@ var grade = function(str1, str2, callback) {
 
 	}
 
+	var checkLarger = function(arr1, arr2){
+
+		if (arr2.length > arr1.length) {
+
+			alert({
+				message:'Too many words.'
+			});
+
+	    this.allErrors.push(['none', "wrong_word",[]]);
+
+	    return false;
+
+	  }
+
+	}
+
   ////////////////////////////////////////
 
 
@@ -344,12 +363,17 @@ var grade = function(str1, str2, callback) {
   // Convert strings to arrays
   groupWords(str1, str2, function(arr1, arr2) {
 
+		// Check if user input (arr2) is larger than key (arr1)
+		checkLarger(arr1, arr2);
+
 		if(arr1.length === arr2.length){
 
 			// If no words missing, Triage and determine appropriate error
 			checkErrors(arr1, arr2, arr1.length - 1);
 
 		} else {
+
+
 
 			// Check for missing words
 			checkMissing(arr1, arr2);
