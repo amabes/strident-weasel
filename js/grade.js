@@ -32,9 +32,6 @@ var grade = function(str1, str2) {
     str1 = str1.split(' '); // #TODO experiment with .match(/.*?[\.\s]+?/g);
     str2 = str2.split(' ');
 
-    console.log(str1);
-    console.log(str2);
-
     callback(str1, str2);
 
   }
@@ -45,7 +42,7 @@ var grade = function(str1, str2) {
 
 	var createTupleHighlights = function(verdict, error_type, arr1, arr2){
 
-		console.log('/ '+verdict+' / '+error_type+' /');
+		//console.log('/ '+verdict+' / '+error_type+' /');
 
 		var t1b,
 				t1a = this.original.str1.indexOf(arr1);
@@ -101,9 +98,8 @@ var grade = function(str1, str2) {
 
   var traverseWords = function(arr1, arr2, n) {
 
-    console.log('/ / / / traverse / / / / /');
-    console.log(arr1)
-    console.log(arr2)
+    //console.log(arr1)
+    //console.log(arr2)
 
     // Since NOT equal
     // Loop through each character to determine diff.
@@ -118,22 +114,18 @@ var grade = function(str1, str2) {
 
     for (var x = 0; x < arr1.length; x++) {
 
-      console.log('(errors) = ' + errors);
-
       if (errors <= 2) {
         //if (arr1[x].length === arr2[x].length) {
 
         if (x !== j) {
 
           // Checking TYPOS
-          console.log("arr2[j] : " + arr2[j]);
 
           if (arr1[x] !== arr2[j] && arr2[j] != undefined) {
 
             // wrong_word 1
 						createTupleHighlights(false,'wrong_word',arr1,arr2); //this.allErrors.push([false, "wrong_word", [n]]);
-						console.log(this.allErrors);
-						alert('1');
+
 						errors++;
 
             return false;
@@ -142,8 +134,7 @@ var grade = function(str1, str2) {
 
             // Typo
             createTupleHighlights(true,'typo',arr1,arr2);
-						console.log(this.allErrors);
-						alert('2');
+
 						return false;
 
           }
@@ -157,11 +148,9 @@ var grade = function(str1, str2) {
             // swap
             // wrong word
 						createTupleHighlights(false,'wrong_word',arr1,arr2);
-
-						//if (errors < arr1.length - 1) {}
-            //console.log('(SWAP or WRONG WORD)');
 						return false;
 
+						//if (errors < arr1.length - 1) {}
             errors++;
 
           } else {
@@ -181,18 +170,14 @@ var grade = function(str1, str2) {
         console.log('more than one error in word');
 
 				this.allErrors.push(['none', 'wrong_word', []]);
-				console.log(this.allErrors);
-				alert('3');
+
 				return false;
 
-        //return false;
       }
 
       //j++;
 
     }
-
-    console.log('/ / / / / / / / / /');
 
   }
 
@@ -202,7 +187,7 @@ var grade = function(str1, str2) {
       // Words are not equal
       // Potential typo, swap or wrong_word case
 
-      console.log('## [' + n + '] ##');
+      //console.log('## [' + n + '] ##');
       traverseWords(arr1[n], arr2[n], n);
 
     }
@@ -229,18 +214,12 @@ var grade = function(str1, str2) {
   var highlight = function(arr1, arr2, errors) {
 
     console.log(errors);
-    //console.log(this.original.str1);
-    //console.log(this.original.str2);
 
     var result = this.original.str2.split('');
 
     for (var i = 0; i < errors.length; i++) {
-      //if (errors[i][1] == 'typo') {
 
         for (var j = 0; j < errors[i][2].length; j++) {
-
-          //console.log('errors[' + j + '][2][' + j + '][1][0] ', errors[i][2][j][1][0]);
-          //console.log('errors[' + j + '][2][' + j + '][1][1] ', errors[i][2][j][1][1]);
 
           var correct_spelling = this.original.str1.slice(errors[i][2][j][0][0], errors[i][2][j][0][1]);
 
@@ -249,11 +228,7 @@ var grade = function(str1, str2) {
 
         }
 
-      //}
-
     }
-
-    console.log(result);
 
     $('#highlighter').html(result.join(''));
 
@@ -287,10 +262,10 @@ var grade = function(str1, str2) {
     // Triage, determine appropriate error
     checkErrors(arr1, arr2, arr1.length - 1);
 
-    console.log('- - - - highlight - - - ');
+    console.log('- - - - result - - - ');
     highlight(arr1, arr2, this.allErrors);
-    console.log('- - - - /highlight - - - ');
-    // FALSE
+
+		// FALSE
     //
     // Cases: multiple typos, wrong_word, missing
     // return tuples consisting of indices
