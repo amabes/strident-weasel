@@ -6,26 +6,11 @@ var grade = function(str1, str2) {
 
   // Tracking total errors
   this.allErrors = [];
-  this.countErrors = 'None';
 
   // Tracking original strings
   this.original = {
     str1: str1,
     str2: str2
-  }
-
-  var tupler = function(arr1, arr2) {
-
-    var tuples = [];
-
-    for (var i = 0; i < arr1.length; i++) {
-
-      tuples.push([arr1[i], arr2[i]]);
-
-    }
-
-    return tuples;
-
   }
 
   var groupWords = function(str1, str2, callback) {
@@ -36,40 +21,69 @@ var grade = function(str1, str2) {
 
   }
 
-  var isTypo = function() {
-
-  }
-
 	var createTupleHighlights = function(verdict, error_type, arr1, arr2){
 
-		//console.log('/ '+verdict+' / '+error_type+' /');
+		console.log('/ '+verdict+' / '+error_type+' /'+ arr1);
 
-		var t1b,
-				t1a = this.original.str1.indexOf(arr1);
+		if(error_type == 'missing'){
 
-		if (t1a === -1) {
+			// Add space before if not @ begining to prevent
+			// the ossibility of getting the wrong index of
+			// simple words like "is" in parts of other words.
+			var _arr1 = this.original.str1.split(' ');
 
-			t1a = 0;
-			t1b = arr2.length;
+			if(_arr1.indexOf(arr1)!=0){
+					arr1 = ' '+arr1;
+			}
 
-		} else {
-
-			t1b = this.original.str1.indexOf(arr1) + arr1.length;
+			// Create default array for str2
+			arr2 = this.original.str2.split('');
 
 		}
 
+		var t1b,
+				t1a = this.original.str1.indexOf(arr1);
+				console.log('0: t1a ',t1a);
+				console.log('0: t1b ',t1b);
+		if (t1a === -1) {
+
+			t1a = 0;
+			t1b = arr1.length;
+			console.log('arr2 ',arr2);
+			console.log('1: t1a ',t1a);
+			console.log('1: t1b ',t1b);
+		} else {
+
+			t1b = this.original.str1.indexOf(arr1) + arr1.length;
+			console.log('2: t1a ',t1a);
+			console.log('2: t1b ',t1b);
+		}
+		console.log('3: t1a ',t1a);
+		console.log('3: t1b ',t1b);
+
 		var t2b,
 				t2a = this.original.str2.indexOf(arr2);
+				console.log('4: t1a ',t1a);
+				console.log('4: t1b ',t1b);
+		if(error_type == 'missing') {
 
-		if (t2a === -1) {
+			// Set both blam coordinates to t1a
+			t2a = t1a;
+			t2b = t1a;
+			console.log('5: t1a ',t1a);
+			console.log('5: t1b ',t1b);
+		} else if (t2a === -1) {
 
 			t2a = 0;
 			t2b = arr2.length;
+			console.log('6: t1a ',t1a);
+			console.log('6: t1b ',t1b);
 
 		} else {
 
 			t2b = this.original.str2.indexOf(arr2) + arr2.length;
-
+			console.log('7: t1a ',t1a);
+			console.log('7: t1b ',t1b);
 		}
 
 		var tupe = {
@@ -77,6 +91,7 @@ var grade = function(str1, str2) {
 			1: [t2a, t2b]
 		}
 
+		console.log('tupe ', tupe);
 
 		// Aggregate all typos into one error
 		for (var y = 0; y < this.allErrors.length; y++) {
@@ -85,6 +100,12 @@ var grade = function(str1, str2) {
 
 				// add to existing list of typos
 				this.allErrors[y][2].push(tupe);
+
+				if (this.allErrors[y][1] === 'wrong_word') {
+
+						this.allErrors[y][0] = 'none';
+
+				}
 
 				return false;
 
@@ -222,10 +243,25 @@ var grade = function(str1, str2) {
 
         for (var j = 0; j < errors[i][2].length; j++) {
 
-          var correct_spelling = this.original.str1.slice(errors[i][2][j][0][0], errors[i][2][j][0][1]);
+					console.log(errors[i][2][j][0][0]);
+					console.log(errors[i][2][j][0][1]);
+
+					var correct_spelling = this.original.str1.slice(errors[i][2][j][0][0], errors[i][2][j][0][1]);
 
           result.splice(errors[i][2][j][1][0], 0, '<span type="'+errors[i][1]+'"><span>'+errors[i][1]+': ' + correct_spelling + '</span>');
-          result.splice(errors[i][2][j][1][1] + 1, 0, '</span>');
+
+					if(errors[i][1] === 'missing'){
+
+						// Value was missing, insert it
+						result.splice(errors[i][2][j][1][1] + 1, 0, correct_spelling+'</span>');
+
+					} else {
+						// Value is present, wrap it.
+						result.splice(errors[i][2][j][1][1] + 1, 0, '</span>');
+
+					}
+
+					console.log(result);
 
         }
 
@@ -234,6 +270,50 @@ var grade = function(str1, str2) {
     $('#highlighter').html(result.join(''));
 
   }
+
+	var checkMissing = function(arr1, arr2){
+		console.log(arr1);
+		console.log(arr2);
+		if (arr2.length <= arr1.length-2) {
+
+			// Missing 2 or more words
+			alert('Try again. 2 or more words missing.')
+
+		} else if (arr2.length <= arr1.length-1){
+
+			// Missing 1 word
+			for (var i=0;i<arr2.length;i++) {
+
+				// Remove words in both arrays that are not present in arr1
+				var ar1Index = arr1.indexOf(arr2[i]);
+
+				if (ar1Index!== -1) {
+					arr1.splice(ar1Index, 1);
+					arr2.splice(i, 1);
+					i-=1;
+
+				}
+
+			}
+
+			if(arr1.length>1){
+
+				// Missing 1 word and others contain errors
+				// Not sure how to isolate missing word in this scenario
+				alert('Try again. Missing words and contains other errors.');
+				return false;
+
+			}
+
+			console.log('missing word is ', arr1[0]);
+			// Missing 1 word and there are no other typos, etc.
+			createTupleHighlights(false,'missing',arr1[0]);
+
+			return true;
+
+		}
+
+	}
 
   var success = function() {
 
@@ -260,8 +340,18 @@ var grade = function(str1, str2) {
   // Convert strings to arrays
   groupWords(str1, str2, function(arr1, arr2) {
 
-    // Triage, determine appropriate error
-    checkErrors(arr1, arr2, arr1.length - 1);
+
+		if(arr1.length === arr2.length){
+
+			// If no words missing, Triage and determine appropriate error
+			checkErrors(arr1, arr2, arr1.length - 1);
+
+		} else {
+
+			// Check for missing words
+			checkMissing(arr1, arr2);
+
+		}
 
     console.log('- - - - result - - - ');
     highlight(arr1, arr2, this.allErrors);

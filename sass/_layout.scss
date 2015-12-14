@@ -77,7 +77,7 @@
 
 }
 
-input[type="submit"] {
+input[type="submit"], #try-again {
 	background:rgba(0,0,0,.8);
 	color:white;
 	padding:10px 15px;
@@ -86,4 +86,9 @@ input[type="submit"] {
 	&:hover {
 		background:black;
 	}
+}
+
+#try-again {
+	text-decoration: none;
+	display: none;
 }

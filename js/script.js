@@ -1,6 +1,7 @@
 var customKey = function() {
 
-  var person = prompt("Enter custom text", "Nag a ram!");
+  var person = prompt("Enter custom text", "Nag a ram!"),
+      answer = $('#user-input');
 
   if (person != null) {
 
@@ -8,13 +9,13 @@ var customKey = function() {
 
     $('#key').val(person);
 
-    $('#user-input').attr('placeholder', '').val('').focus();
+    answer.attr('placeholder', '');
 
-    $('#highlighter').hide();
+    tryAgain();
 
   } else {
 
-    $('#user-input').focus();
+    answer.focus();
 
   }
 }
@@ -30,11 +31,9 @@ var keyChange = function(that, data) {
 
   var placeholder = that.find('option[value="' + data.target.value + '"]').attr('sample');
 
-  $('#user-input').attr('placeholder', placeholder).val('');
+  $('#user-input').attr('placeholder', placeholder);
 
-  $('#highlighter').hide();
-
-  $('#user-input').focus();
+  tryAgain();
 
 }
 
@@ -43,21 +42,36 @@ var submitAnswer = function() {
   var key = $('#key').val(),
     answer = $('#user-input');
 
+  // Buttons
+  $('input[type="submit"]').hide();
+  $('#try-again').show();
+
   if (answer.val() == '') {
-    alert('Try again.')
+
+    alert('Try again.');
+
+    tryAgain();
+
     return false;
+
   }
 
   $('#highlighter').show();
 
-  $('#highlighter').click(function() {
-    $(this).hide();
-    answer.focus();
-  });
-
   grade(key, answer.val());
 
   answer.blur();
+
+  $('#try-again').focus();
+
+}
+
+var tryAgain = function(){
+
+  $('#highlighter').empty().hide();
+  $('#user-input').focus().val('');
+  $('#try-again').hide();
+  $('input[type="submit"]').show();
 
 }
 
@@ -66,6 +80,12 @@ $(document).ready(function() {
   $('#key').change(function(data) {
 
     keyChange($(this), data);
+
+  });
+
+  $('#try-again').click(function(){
+
+    tryAgain();
 
   });
 
