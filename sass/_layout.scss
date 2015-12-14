@@ -59,6 +59,10 @@
 				}
 			}
 
+			&[type="wrong_word"] span {
+				left:-40px;
+			}
+
 			&:hover {
 
 				span {

@@ -43,7 +43,9 @@ var grade = function(str1, str2) {
 
   }
 
-	var createTupleHighlights = function(arr1, arr2){
+	var createTupleHighlights = function(verdict, error_type, arr1, arr2){
+
+		console.log('/ '+verdict+' / '+error_type+' /');
 
 		var t1b,
 				t1a = this.original.str1.indexOf(arr1);
@@ -73,10 +75,27 @@ var grade = function(str1, str2) {
 
 		}
 
-		return {
+		var tupe = {
 			0: [t1a, t1b],
 			1: [t2a, t2b]
 		}
+
+
+		// Aggregate all typos into one error
+		for (var y = 0; y < this.allErrors.length; y++) {
+
+			if (this.allErrors[y][1] === error_type) {
+
+				// add to existing list of typos
+				this.allErrors[y][2].push(tupe);
+
+				return false;
+
+			}
+
+		}
+
+		this.allErrors.push([verdict, error_type, [tupe]]);
 
 	}
 
@@ -101,52 +120,33 @@ var grade = function(str1, str2) {
 
       console.log('(errors) = ' + errors);
 
-      if (errors <= 1) {
+      if (errors <= 2) {
         //if (arr1[x].length === arr2[x].length) {
-        // Accounts for hhouse
-        //console.log(n + '|' + x + ' = ' + arr1[x] + ' : ' + arr2[j] + ' (j=' + j + ')');
 
         if (x !== j) {
 
           // Checking TYPOS
-          console.log('...................checking (typos)');
-          //console.log(n + '|' + x + ' = ' + arr1[x] + ' : ' + arr2[j] + ' (j=' + j + ')');
-
           console.log("arr2[j] : " + arr2[j]);
 
           if (arr1[x] !== arr2[j] && arr2[j] != undefined) {
 
-            // Typo
-            console.log('(FALSE : WRONG WORD)');
-            this.allErrors.push([false, "wrong_word", [n]]);
-            errors++;
+            // wrong_word 1
+						createTupleHighlights(false,'wrong_word',arr1,arr2); //this.allErrors.push([false, "wrong_word", [n]]);
+						console.log(this.allErrors);
+						alert('1');
+						errors++;
 
             return false;
 
           } else if (j >= arr1[x].length) {
 
             // Typo
-            console.log('(TRUE : TYPO)');
-
-            var tupe = createTupleHighlights(arr1,arr2);
-
-						// Aggregate all typos into one error
-						for (var y = 0; y < this.allErrors.length; y++) {
-
-						  if (this.allErrors[y][1] === 'typo') {
-
-						    // add to existing list of typos
-						    return this.allErrors[y][2].push(tupe);
-
-						  }
-
-						}
-
-            return this.allErrors.push([true, 'typo', [tupe]]);
+            createTupleHighlights(true,'typo',arr1,arr2);
+						console.log(this.allErrors);
+						alert('2');
+						return false;
 
           }
-
-          console.log('..............................');
 
         } else {
 
@@ -156,9 +156,11 @@ var grade = function(str1, str2) {
 
             // swap
             // wrong word
+						createTupleHighlights(false,'wrong_word',arr1,arr2);
 
-            if (errors < arr1.length - 1) {}
-            console.log('(error 1 : SWAP or WRONG WORD)');
+						//if (errors < arr1.length - 1) {}
+            //console.log('(SWAP or WRONG WORD)');
+						return false;
 
             errors++;
 
@@ -178,9 +180,10 @@ var grade = function(str1, str2) {
 
         console.log('more than one error in word');
 
-				var tupe = createTupleHighlights(arr1,arr2);
-
-				return this.allErrors.push([true, 'wrong_word', [tupe]]);
+				this.allErrors.push(['none', 'wrong_word', []]);
+				console.log(this.allErrors);
+				alert('3');
+				return false;
 
         //return false;
       }
@@ -232,7 +235,7 @@ var grade = function(str1, str2) {
     var result = this.original.str2.split('');
 
     for (var i = 0; i < errors.length; i++) {
-      if (errors[i][1] == 'typo') {
+      //if (errors[i][1] == 'typo') {
 
         for (var j = 0; j < errors[i][2].length; j++) {
 
@@ -241,12 +244,12 @@ var grade = function(str1, str2) {
 
           var correct_spelling = this.original.str1.slice(errors[i][2][j][0][0], errors[i][2][j][0][1]);
 
-          result.splice(errors[i][2][j][1][0], 0, '<span type="typo"><span>Typo: ' + correct_spelling + '</span>');
+          result.splice(errors[i][2][j][1][0], 0, '<span type="'+errors[i][1]+'"><span>'+errors[i][1]+': ' + correct_spelling + '</span>');
           result.splice(errors[i][2][j][1][1] + 1, 0, '</span>');
 
         }
 
-      }
+      //}
 
     }
 
