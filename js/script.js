@@ -1,34 +1,34 @@
 var customKey = function() {
 
-    var person = prompt("Enter custom text", "Nag a ram!");
+  var person = prompt("Enter custom text", "Nag a ram!");
 
-    if (person != null) {
+  if (person != null) {
 
-      $('<option value="'+person+'">'+person+'</option>').insertBefore($('option[value="0000"]'));
+    $('<option value="' + person + '">' + person + '</option>').insertBefore($('option[value="0000"]'));
 
-      $('#key').val(person);
+    $('#key').val(person);
 
-      $('#user-input').attr('placeholder', '').val('').focus();
+    $('#user-input').attr('placeholder', '').val('').focus();
 
-      $('#highlighter').hide();
+    $('#highlighter').hide();
 
-    } else {
+  } else {
 
-		    $('#user-input').focus();
+    $('#user-input').focus();
 
-    }
+  }
 }
 
-var keyChange = function(that,data){
+var keyChange = function(that, data) {
 
   var value = that.val();
 
-  if(value=="0000"){
+  if (value == "0000") {
     customKey();
     return false;
   }
 
-  var placeholder = that.find('option[value="'+data.target.value+'"]').attr('sample');
+  var placeholder = that.find('option[value="' + data.target.value + '"]').attr('sample');
 
   $('#user-input').attr('placeholder', placeholder).val('');
 
@@ -38,40 +38,43 @@ var keyChange = function(that,data){
 
 }
 
-var submitAnswer = function(){
+var submitAnswer = function() {
 
   var key = $('#key').val(),
     answer = $('#user-input');
 
+  if (answer.val() == '') {
+    alert('Try again.')
+    return false;
+  }
+
   $('#highlighter').show();
 
-  $('#highlighter').click(function(){
-      $(this).hide();
-      answer.focus();
+  $('#highlighter').click(function() {
+    $(this).hide();
+    answer.focus();
   });
 
   grade(key, answer.val());
 
   answer.blur();
 
-
-
 }
 
-$(document).ready(function(){
+$(document).ready(function() {
 
-	$('#key').change(function(data){
+  $('#key').change(function(data) {
 
-		keyChange($(this),data);
+    keyChange($(this), data);
 
-	});
+  });
 
-	$('#submit-answer').submit(function(){
+  $('#submit-answer').submit(function() {
 
-		submitAnswer();
+    submitAnswer();
 
     return false;
 
-	});
+  });
 
 });
