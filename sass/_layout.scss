@@ -3,17 +3,74 @@
 	margin:30px auto 8%;
 }
 
-#user-input {
-  padding: 0 0 0 10px;
-  min-width: 400px;
-  background:none;
-  border:1px solid #e9eaed;
-  border-bottom: 1px #D1D1D1 dashed;
-  &:focus {
-	outline:none;
-	background:rgba(255,255,255,.8);
-	border:1px solid #D1D1D1;
-  }
+#answer-area {
+	position: relative;
+
+	input {
+	  padding:0;
+	  min-width: 400px;
+	  background:none;
+	  border:1px solid #e9eaed;
+	  border-bottom: 1px #D1D1D1 dashed;
+		text-align: center;
+	  &:focus {
+			outline:none;
+			background:rgba(255,255,255,.8);
+			border:1px solid #D1D1D1;
+	  }
+	}
+
+	#highlighter {
+		display: none;
+		position: absolute;
+		background: #e9eaed;
+		top:0;
+		left:0;
+		width:100%;
+		padding:8px 0 6px;
+		cursor: default;
+
+		> span {
+			position: relative;
+			display: inline-block;
+			background: yellow;
+			padding:0 10px;
+
+			span {
+
+				position: absolute;
+				display: none;
+				top: -59px;
+				left: -10px;
+				background: black;
+				color: white;
+				padding: 0 10px;
+				&:after {
+					content:'';
+					// https://css-tricks.com/snippets/css/css-triangle/
+					border-left: 10px solid transparent;
+					border-right: 10px solid transparent;
+					border-top: 10px solid black;
+					//
+					position: absolute;
+					left: 50%;
+					margin: 0 0 0 -10px;
+					bottom: -10px;
+				}
+			}
+
+			&:hover {
+
+				span {
+					display: block;
+				}
+
+			}
+
+		}
+
+	}
+
 }
 
 input[type="submit"] {
