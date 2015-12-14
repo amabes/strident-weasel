@@ -98,8 +98,8 @@ var grade = function(str1, str2) {
 
   var traverseWords = function(arr1, arr2, n) {
 
-    //console.log(arr1)
-    //console.log(arr2)
+    console.log(arr1)
+    console.log(arr2)
 
     // Since NOT equal
     // Loop through each character to determine diff.
@@ -187,7 +187,6 @@ var grade = function(str1, str2) {
       // Words are not equal
       // Potential typo, swap or wrong_word case
 
-      //console.log('## [' + n + '] ##');
       traverseWords(arr1[n], arr2[n], n);
 
     }
@@ -214,6 +213,8 @@ var grade = function(str1, str2) {
   var highlight = function(arr1, arr2, errors) {
 
     console.log(errors);
+
+		$('code').html(errors);
 
     var result = this.original.str2.split('');
 
