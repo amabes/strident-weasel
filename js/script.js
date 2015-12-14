@@ -49,7 +49,10 @@ var submitAnswer = function() {
   $('#highlighter').show();
 
   grade(key, answer.val(),function(){
+
+    // reset
     tryAgain();
+
   });
 
   answer.blur();
@@ -64,6 +67,7 @@ var tryAgain = function(){
   $('#user-input').focus().val('');
   $('#try-again').hide();
   $('input[type="submit"]').show();
+  $('code').empty();
 
 }
 
